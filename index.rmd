@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+Glink="https://github.com/543-Van-Deliverables/Deliverable-1/raw/main/"
+Flink="CountryRankingFinal.csv"
+CRF=read.csv(paste0(Glink,Flink))
+```
+```{r}
+names(CRF)
+```
+```{r}
+str(CRF,width = 70, strict.width='cut')
+```
+```{r}
+summary(CRF$LifeExpectancy)
+```
+```{r}
+(statVals=summary(CRF$LifeExpectancy,digits = 2)[1:6])
+```
+
+
+```{r}
+library(magrittr)
+statVals=statVals%>%as.vector()
+
+library(ggplot2)
+base=ggplot(CRF,aes(y=LifeExpectancy))
+b1=base+geom_boxplot()
+b1=b1+coord_flip()
+b1=b1+scale_y_continuous(breaks=statVals)
+b1
+```
+```{r}
+(theIQR=IQR(CRF$LifeExpectancy,na.rm=T))
+```
+```{r}
+(lowerT=summary(CRF$LifeExpectancy)[[2]] - theIQR*1.5)
+```
+```{r}
+(numOutliers=sum(CRF$LifeExpectancy<lowerT,na.rm=T))
+```
+```{r}
+txtUpper=paste0('Threshold:',lowerT)
+txtOut=paste0('Outlying Ages:',numOutliers)
+b1_line = b1 + geom_hline(yintercept = lowerT,color='green',linetype="dotted",size=2) 
+b1_upper_line=b1_line + annotate(geom = 'text',label=txtUpper,y = lowerT-1,x=0.2,angle=90)
+
+b1_upper_line_out=b1_upper_line + annotate(geom = 'text',label=txtOut,y = lowerT-1,x=-0.05,angle=0)
+b1_upper_line_out
+```
+```{r}
+b1_upper_line_out_noX=b1_upper_line_out + 
+                      theme(axis.text.y = element_blank(),
+                            axis.ticks.y = element_blank(),
+                            axis.title.y = element_blank())
+b1_upper_line_out_noX
+
+b1_upper_line_out_noX + theme(axis.text.x = element_text(angle = 90,size = 8,vjust = 0.5))
+```
+```{r}
+WIDTH=10
+library(ggplot2)
+base= ggplot(CRF)  
+h1= base + geom_histogram(aes(x = LifeExpectancy),binwidth = WIDTH,fill='darkgreen') 
+h1=h1 + labs(y="count")
+h1
+```
+```{r}
+sd(CRF$LifeExpectancy,na.rm = T)
+
+mad(CRF$LifeExpectancy,na.rm = T)
+
+library(DescTools)
+CoefVar(CRF$LifeExpectancy,na.rm = T,unbiased=T,conf.level = 0.95)
+
+Skew(CRF$LifeExpectancy,na.rm = T, conf.level = 0.95, ci.type = "bca", R=2500)
+
+Kurt(CRF$LifeExpectancy, na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+
+MeanCI(CRF$LifeExpectancy,na.rm = T)
+mn=Mean(CRF$LifeExpectancy,na.rm = T)
+```
+```{r}
+cv=CoefVar(CRF$LifeExpectancy,na.rm = T)
+sd=SD(CRF$LifeExpectancy,na.rm = T)
+md=Median(CRF$LifeExpectancy,na.rm = T)
+mn=Mean(CRF$LifeExpectancy,na.rm = T)
+mn.low=MeanCI(CRF$LifeExpectancy,na.rm = T)[['lwr.ci']]
+mn.up=MeanCI(CRF$LifeExpectancy,na.rm = T)[['upr.ci']]
+sk=Skew(CRF$LifeExpectancy,na.rm = T)
+```
+
+
+```{r}
+annMean=paste0('Mean:',round(mn))
+annSk=paste0('Skewness:',round(sk,2))
+
+h1+ geom_vline(xintercept = mn,color='green') +annotate(geom = 'text',color='green',label=annMean,y = 50,x=mn-1,angle=90) + annotate(geom = 'text', color='darkblue',label=annSk,y = 05,x=lowerT+35,angle=0) +ggtitle("World Life Expectancy")+labs(x="Life Expectancy",y="Number of Countries")
+```
+
+```
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
