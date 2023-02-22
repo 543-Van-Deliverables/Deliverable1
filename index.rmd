@@ -10,7 +10,7 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
 
 ```{r}
-Glink="https://github.com/543-Van-Deliverables/Deliverable-1/raw/main/"
+Glink="https://github.com/543-Van-Deliverables/Deliverable1/raw/main/"
 Flink="CountryRankingFinal.csv"
 CRF=read.csv(paste0(Glink,Flink))
 ```
@@ -58,10 +58,7 @@ b1_upper_line_out=b1_upper_line + annotate(geom = 'text',label=txtOut,y = lowerT
 b1_upper_line_out
 ```
 ```{r}
-b1_upper_line_out_noX=b1_upper_line_out + 
-                      theme(axis.text.y = element_blank(),
-                            axis.ticks.y = element_blank(),
-                            axis.title.y = element_blank())
+b1_upper_line_out_noX=b1_upper_line_out + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank())
 b1_upper_line_out_noX
 
 b1_upper_line_out_noX + theme(axis.text.x = element_text(angle = 90,size = 8,vjust = 0.5))
