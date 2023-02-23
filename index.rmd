@@ -14,15 +14,7 @@ Glink="https://github.com/543-Van-Deliverables/Deliverable1/raw/main/"
 Flink="CountryRankingFinal.csv"
 CRF=read.csv(paste0(Glink,Flink))
 ```
-```{r}
-names(CRF)
-```
-```{r}
-str(CRF,width = 70, strict.width='cut')
-```
-```{r}
-summary(CRF$LifeExpectancy)
-```
+
 ```{r}
 (statVals=summary(CRF$LifeExpectancy,digits = 2)[1:6])
 ```
@@ -54,7 +46,7 @@ txtOut=paste0('Outlying Ages:',numOutliers)
 b1_line = b1 + geom_hline(yintercept = lowerT,color='green',linetype="dotted",size=2) 
 b1_upper_line=b1_line + annotate(geom = 'text',label=txtUpper,y = lowerT-1,x=0.2,angle=90)
 
-b1_upper_line_out=b1_upper_line + annotate(geom = 'text',label=txtOut,y = lowerT-1,x=-0.05,angle=0)
+b1_upper_line_out=b1_upper_line + annotate(geom = 'text',label=txtOut,y = lowerT-.05,x=-0.05,angle=0)
 b1_upper_line_out
 ```
 ```{r}
